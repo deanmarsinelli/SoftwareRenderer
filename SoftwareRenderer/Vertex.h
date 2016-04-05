@@ -7,7 +7,7 @@
 
 struct Vertex
 {
-	Vector3F position;
+	Vector4F position;  // just leave w as 1
 	Vector4F color;
 };
 

@@ -129,8 +129,35 @@ void Graphics::DrawIndexed()
 	// index buffer must be multiple of 3
 	assert(indexBuffer->size() % 3 != 0);
 
-	worldViewProj = (*worldMatrix) * (*viewMatrix);
+	Index triangleIndex = 0;
+	worldViewProj = (*worldMatrix) * (*viewMatrix) * (*projMatrix);
 
+	while (triangleIndex < indexBuffer->size())
+	{
+		// "vertex shader"
+		// get triangle
+		Triangle tri;
+		tri.p0 = (*vertexBuffer)[(*indexBuffer)[triangleIndex]];
+		tri.p1 = (*vertexBuffer)[(*indexBuffer)[triangleIndex + 1]];
+		tri.p2 = (*vertexBuffer)[(*indexBuffer)[triangleIndex + 2]];
+
+
+		// convert vertices from local space to homogeneous clip space
+		tri.p0.position = tri.p0.position * worldViewProj;
+		tri.p1.position = tri.p1.position * worldViewProj;
+		tri.p2.position = tri.p2.position * worldViewProj;
+
+
+		// rasterize
+
+
+
+		// "pixel shader" - interpolate triangle colors
+
+
+
+		triangleIndex += 3;
+	}
 }
 
 void Graphics::Present()

@@ -4,6 +4,7 @@
 
 #include "Matrix.h"
 #include "Texture.h"
+#include "Triangle.h"
 #include "Vertex.h"
 
 enum Matrix
