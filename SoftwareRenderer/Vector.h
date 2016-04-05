@@ -29,7 +29,10 @@ public:
 	// Translate the Vector
 	void Translate(const T& x, const T& y);
 
+	Vec2<T> Negate() const;
+
 	// Overloaded operators
+	Vec2<T> operator-(const Vec2<T>& rhs);
 	Vec2<T>& operator+=(const Vec2<T>& vec);
 	Vec2<T>& operator-=(const Vec2<T>& vec);
 	Vec2<T>& operator*=(const Vec2<T>& vec);
@@ -67,7 +70,10 @@ public:
 	// Translate the Vector
 	void Translate(const T& x, const T& y, const T& z);
 
+	Vec3<T> Negate() const;
+
 	// Overloaded operators
+	Vec3<T> operator-(const Vec3<T>& rhs);
 	Vec3<T>& operator+=(const Vec3<T>& vec);
 	Vec3<T>& operator-=(const Vec3<T>& vec);
 	Vec3<T>& operator*=(const Vec3<T>& vec);
@@ -109,7 +115,10 @@ public:
 	void Translate(const T& x, const T& y, const T& z);
 	void Translate(const T& x, const T& y, const T& z, const T& w);
 
+	Vec4<T> Negate() const;
+
 	// Overloaded operators
+	Vec4<T> operator-(const Vec4<T>& rhs);
 	Vec4<T>& operator+=(const Vec4<T>& vec);
 	Vec4<T>& operator-=(const Vec4<T>& vec);
 	Vec4<T>& operator*=(const Vec4<T>& vec);

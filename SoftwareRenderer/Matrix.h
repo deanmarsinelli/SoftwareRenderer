@@ -155,7 +155,7 @@ inline Mat4x4 operator*(const Mat4x4& lhs, const Mat4x4& rhs)
 	return output;
 }
 
-Vector4F operator*(const Vector4F& rowVec, const Mat4x4& matrix)
+inline Vector4F operator*(const Vector4F& rowVec, const Mat4x4& matrix)
 {
 	Vector4F output;
 

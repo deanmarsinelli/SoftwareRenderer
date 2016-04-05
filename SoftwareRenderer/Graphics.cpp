@@ -1,6 +1,8 @@
 #include <assert.h>
 #include "Graphics.h"
 
+#pragma comment(lib, "d3d9.lib")
+
 Graphics::Graphics(HWND hWnd, int width, int height) :
 	screenWidth(width), 
 	screenHeight(height),
@@ -73,6 +75,60 @@ Texture Graphics::LoadTexture(const char* fileName, unsigned int width, unsigned
 	::LoadTexture(fileName, tex);
 
 	return tex;
+}
+
+Mat4x4 PerspectiveMatrixLH(FLOAT verticalFov, FLOAT aspectRatio, FLOAT nearZ, FLOAT farZ)
+{
+	return Mat4x4();
+}
+
+Mat4x4 LookAtLH(Vector3F position, Vector3F target, Vector3F upDirection)
+{
+	Vector3F eyeDirection = target - position;
+	Vector3F NegEyePosition;
+	FLOAT D0, D1, D2;
+	Vector3F R0, R1, R2;
+	Mat4x4 M;
+
+	R2 = eyeDirection.Normal();
+	R0 = upDirection.CrossProduct(R2);
+	R0.Normalize();
+	R1 = R2.CrossProduct(R0);
+
+	NegEyePosition = position.Negate();
+
+	D0 = R0.DotProduct(NegEyePosition);
+	D1 = R1.DotProduct(NegEyePosition);
+	D2 = R2.DotProduct(NegEyePosition);
+
+	// row 1
+	M.m[0][0] = ((unsigned int)D0 & ~0xFFFFFFFF) | ((unsigned int)R0.x & 0xFFFFFFFF);
+	M.m[0][1] = ((unsigned int)D0 & ~0xFFFFFFFF) | ((unsigned int)R0.y & 0xFFFFFFFF);
+	M.m[0][2] = ((unsigned int)D0 & ~0xFFFFFFFF) | ((unsigned int)R0.z & 0xFFFFFFFF);
+	M.m[0][3] = ((unsigned int)D0 & ~0xFFFFFFFF) | ((unsigned int)1 & 0x00000000);
+
+	// row 2
+	M.m[1][0] = ((unsigned int)D1 & ~0xFFFFFFFF) | ((unsigned int)R1.x & 0xFFFFFFFF);
+	M.m[1][1] = ((unsigned int)D1 & ~0xFFFFFFFF) | ((unsigned int)R1.y & 0xFFFFFFFF);
+	M.m[1][2] = ((unsigned int)D1 & ~0xFFFFFFFF) | ((unsigned int)R1.z & 0xFFFFFFFF);
+	M.m[1][3] = ((unsigned int)D1 & ~0xFFFFFFFF) | ((unsigned int)1 & 0x00000000);
+
+	// row 3
+	M.m[2][0] = ((unsigned int)D2 & ~0xFFFFFFFF) | ((unsigned int)R2.x & 0xFFFFFFFF);
+	M.m[2][1] = ((unsigned int)D2 & ~0xFFFFFFFF) | ((unsigned int)R2.y & 0xFFFFFFFF);
+	M.m[2][2] = ((unsigned int)D2 & ~0xFFFFFFFF) | ((unsigned int)R2.z & 0xFFFFFFFF);
+	M.m[2][3] = ((unsigned int)D2 & ~0xFFFFFFFF) | ((unsigned int)1 & 0x00000000);
+
+
+	// row 4
+	M.m[3][0] = 0.0f;
+	M.m[3][1] = 0.0f;
+	M.m[3][2] = 0.0f;
+	M.m[3][3] = 1.0f;
+
+	M = M.Transpose();
+
+	return M;
 }
 
 void Graphics::BindVertexBuffer(VertexBuffer* buffer)

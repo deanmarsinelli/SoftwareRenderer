@@ -1,3 +1,4 @@
+#pragma once
 /*
 	Vector.inl
 	Author: Dean Marsinelli
@@ -52,7 +53,23 @@ void Vec2<T>::Translate(const T& x_, const T& y_)
 	y += y_;
 }
 
+template<typename T>
+Vec2<T> Vec2<T>::Negate() const
+{
+	return Vec2<T>(this->x * -1, this->y * -1);
+}
+
 // Overloaded Operators
+template<typename T>
+Vec2<T> Vec2<T>::operator-(const Vec2<T>& rhs)
+{
+	Vec2 result;
+	result.x = this->x - rhs.x;
+	result.y = this->y - rhs.y;
+
+	return result;
+}
+
 template<typename T>
 Vec2<T>& Vec2<T>::operator+=(const Vec2<T>& vec)
 {
@@ -212,7 +229,24 @@ void Vec3<T>::Translate(const T& x_, const T& y_, const T& z_)
 	z += z_;
 }
 
+template<typename T>
+Vec3<T> Vec3<T>::Negate() const
+{
+	return Vec3<T>(this->x * -1, this->y * -1, this->z * -1);
+}
+
 // Overloaded operators
+template<typename T>
+Vec3<T> Vec3<T>::operator-(const Vec3<T>& rhs)
+{
+	Vec3 result;
+	result.x = this->x - rhs.x;
+	result.y = this->y - rhs.y;
+	result.z = this->z - rhs.z;
+
+	return result;
+}
+
 template<typename T>
 Vec3<T>& Vec3<T>::operator+=(const Vec3<T>& vec)
 {
@@ -402,6 +436,24 @@ void Vec4<T>::Translate(const T& x_, const T& y_, const T& z_, const T& w_)
 	y += y_;
 	z += z_;
 	w += w_;
+}
+
+template<typename T>
+Vec4<T> Vec4<T>::Negate() const
+{
+	return Vec4<T>(this->x * -1, this->y * -1, this->z * -1, this->w * -1);
+}
+
+template<typename T>
+Vec4<T> operator-(const Vec4<T>& rhs)
+{
+	Vec4 result;
+	result.x = this->x - rhs.x;
+	result.y = this->y - rhs.y;
+	result.z = this->z - rhs.z;
+	result.w = this->w - rhs.w;
+
+	return result;
 }
 
 template<typename T>

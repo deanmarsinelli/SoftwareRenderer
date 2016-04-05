@@ -21,6 +21,8 @@ public:
 	~Graphics();
 	
 	Texture LoadTexture(const char* fileName, unsigned int width, unsigned int height);
+	Mat4x4 PerspectiveMatrixLH(FLOAT verticalFov, FLOAT aspectRatio, FLOAT nearZ, FLOAT farZ);
+	Mat4x4 LookAtLH(Vector3F position, Vector3F target, Vector3F upDirection);
 
 	// input setup
 	void BindVertexBuffer(VertexBuffer* buffer);
