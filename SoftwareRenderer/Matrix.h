@@ -19,7 +19,7 @@ public:
 		float m30, float m31, float m32, float m33);
 
 	/// Copy constructor
-	Mat4x4(Mat4x4& matrix);
+	Mat4x4(const Mat4x4& matrix);
 
 	/// Set a 3D Position
 	void SetPosition(const Vector3F& position);
@@ -36,17 +36,8 @@ public:
 	/// Return the forward vector for the matrix
 	Vector3F GetDirection() const;
 
-	/// Return the up vector for the matrix
-	Vector3F GetUp() const;
-
-	/// Return the "right" vector for the matrix 
-	Vector3F GetRight() const;
-
 	/// Return the yaw, pitch and roll values
 	Vector3F GetYawPitchRoll() const;
-
-	/// Return the x, y, z scale values
-	Vector3F GetScale() const;
 
 	/// Transform a Vector4F by this matrix
 	Vector4F Transform(Vector4F& vec) const;
@@ -60,35 +51,14 @@ public:
 	/// Return the Transpose of this matrix
 	Mat4x4 Transpose() const;
 
-	/// Build a translation matrix from a Vector3F
-	//void BuildTranslation(const Vector3F& position);
-
-	/// Build a translation matrix from x, y, and z values
-	//void BuildTranslation(const float x, const float y, const float z);
-
-	/// Build a rotation matrix from an x angle
-	//void BuildRotationX(const float radians);
-
-	/// Build a rotation matrix from a y angle
-	//void BuildRotationY(const float radians);
-
-	/// Build a rotation matrix from a z angle
-	//void BuildRotationZ(const float radians);
-
-	/// Build a rotation matrix from yaw, pitch, and roll angles
-	//void BuildYawPitchRoll(const float yawRadians, const float pitchRadians, const float rollRadians);
-
-	/// Build a look at matrix from the eye position, the at vector, and the up vector
-	//void BuildRotationLookAt(const Vector3F& eye, const Vector3F& at, const Vector3F& up);
-
-	/// Build a scaling matrix
-	//void BuildScale(const float x, const float y, const float z);
+	/// Overloaded assignment operator
+	Mat4x4& operator=(const Mat4x4& rhs);
 
 	/// Overloaded equals operator
-	bool operator==(const Mat4x4& rhs);
+	bool operator==(const Mat4x4& rhs) const;
 
 	/// Overloaded not equal operator
-	bool operator!=(const Mat4x4& rhs);
+	bool operator!=(const Mat4x4& rhs) const;
 
 	float operator() (size_t Row, size_t Column) const { return m[Row][Column]; }
 

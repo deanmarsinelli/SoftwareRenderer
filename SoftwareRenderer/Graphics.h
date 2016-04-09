@@ -7,6 +7,10 @@
 #include "Triangle.h"
 #include "Vertex.h"
 
+#define _PI		3.141592654f
+#define _2PI		6.283185307f
+#define DegToRad(x) x * (_PI / 180)
+
 enum Matrix
 {
 	WORLD,
@@ -20,9 +24,9 @@ public:
 	Graphics(HWND hWnd, int width, int height);
 	~Graphics();
 	
-	Texture LoadTexture(const char* fileName, unsigned int width, unsigned int height);
-	Mat4x4 PerspectiveMatrixLH(FLOAT verticalFov, FLOAT aspectRatio, FLOAT nearZ, FLOAT farZ);
-	Mat4x4 LookAtLH(Vector3F position, Vector3F target, Vector3F upDirection);
+	static Texture LoadTexture(const char* fileName, unsigned int width, unsigned int height);
+	static Mat4x4 PerspectiveMatrixLH(FLOAT verticalFov, FLOAT aspectRatio, FLOAT nearZ, FLOAT farZ);
+	static Mat4x4 LookAtLH(const Vector3F& position, const Vector3F& target, const Vector3F& upDirection);
 
 	// input setup
 	void BindVertexBuffer(VertexBuffer* buffer);
@@ -38,8 +42,20 @@ public:
 	void Present();
 
 private:
-	void DrawLine(int x1, int y1, int x2, int y2, int r, int g, int b);
-	void DrawCircle(int cx, int cy, int radius, int r, int g, int b);
+	Triangle TransformTriangle(const Triangle& triangle);
+	bool ClipTriangle(const Triangle& triangle);
+	Triangle PerspectiveDivide(const Triangle& triangle);
+	Triangle GetWindowCoordinates(const Triangle& triangle);
+	void DrawWireFrame(const Triangle& triangle);
+	void DrawTriangleColored(const Triangle& triangle);
+	void DrawTriangleTextured(const Triangle& triangle);
+	void DrawLine(float x0, float y0, const Vector4F& color0, float x1, float y1, const Vector4F& color1);
+	void DrawSpans(const Edge& e0, const Edge& e1);
+	void DrawSpan(const Span& span, int y);
+	void DrawPixel(int x, int y, const Vector4F& color);
+	
+public:
+	bool wireFrame;
 
 private:
 	int screenWidth;

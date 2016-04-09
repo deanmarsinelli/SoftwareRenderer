@@ -9,9 +9,24 @@ struct Triangle
 	Vertex p2;
 };
 
-struct IndexTriangle
+
+class Edge
 {
-	Index i0;
-	Index i1;
-	Index i2;
+public:
+	Edge(int x0, int y0, float z0, const Vector4F& color0, int x1, int y1, float z1, const Vector4F& color1);
+
+	Vector4F color0, color1;
+	int x0, y0, x1, y1;
+	float z0, z1;
+};
+
+
+class Span
+{
+public:
+	Span(int x0, float z0, const Vector4F& color0, int x1, float z1, const Vector4F& color1);
+
+	Vector4F color0, color1;
+	int x0, x1;
+	float z0, z1;
 };

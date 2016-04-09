@@ -56,27 +56,15 @@ Mat4x4::Mat4x4(float m00, float m01, float m02, float m03, float m10, float m11,
 	m[3][3] = m33;
 }
 
-Mat4x4::Mat4x4(Mat4x4& matrix)
+Mat4x4::Mat4x4(const Mat4x4& matrix)
 {
-	m[0][0] = matrix.m[0][0];
-	m[0][1] = matrix.m[0][1];
-	m[0][2] = matrix.m[0][2];
-	m[0][3] = matrix.m[0][3];
-
-	m[1][0] = matrix.m[1][0];
-	m[1][1] = matrix.m[1][1];
-	m[1][2] = matrix.m[1][2];
-	m[1][3] = matrix.m[1][3];
-
-	m[2][0] = matrix.m[2][1];
-	m[2][1] = matrix.m[2][1];
-	m[2][2] = matrix.m[2][1];
-	m[2][3] = matrix.m[2][1];
-
-	m[3][0] = matrix.m[3][0];
-	m[3][1] = matrix.m[3][1];
-	m[3][2] = matrix.m[3][2];
-	m[3][3] = matrix.m[3][3];
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			m[i][j] = matrix.m[i][j];
+		}
+	}
 }
 
 void Mat4x4::SetPosition(const Vector3F& position)
@@ -107,6 +95,35 @@ void Mat4x4::SetScale(const Vector3F& scale)
 Vector3F Mat4x4::GetPosition() const
 {
 	return Vector3F(m[3][0], m[3][1], m[3][2]);
+}
+
+Vector3F Mat4x4::GetDirection() const
+{
+	Mat4x4 justRot = *this;
+	justRot.SetPosition(Vector3F(0.0f, 0.0f, 0.0f));
+	Vector3F forward = justRot.Transform(Vector3F(0.0f, 0.0f, 1.0f));
+	return forward;
+}
+
+Vector3F Mat4x4::GetYawPitchRoll() const
+{
+	float yaw, pitch, roll;
+
+	pitch = std::asin(-_23);
+
+	double test = std::cos(pitch);
+	if (test > kThreshold)
+	{
+		roll = std::atan2(_21, _22);
+		yaw = std::atan2(_13, _33);
+	}
+	else
+	{
+		roll = std::atan2(-_12, _11);
+		yaw = 0.0f;
+	}
+
+	return Vector3F(yaw, pitch, roll);
 }
 
 Vector4F Mat4x4::Transform(Vector4F &vec) const
@@ -247,7 +264,7 @@ Mat4x4 Mat4x4::Inverse(float& det) const
 	if (det == 0)
 		return Mat4x4();
 
-	det = 1.0 / det;
+	det = 1.0f / det;
 
 	for (i = 0; i < 16; i++)
 		inverse.m_[i] = inverse.m_[i] * det;
@@ -258,25 +275,46 @@ Mat4x4 Mat4x4::Inverse(float& det) const
 Mat4x4 Mat4x4::Transpose() const
 {
 	Mat4x4 output;
-	output.m[0][0] = this->m[0][0];
-	output.m[0][1] = this->m[1][0];
-	output.m[0][2] = this->m[2][0];
-	output.m[0][3] = this->m[3][0];
-
-	output.m[1][0] = this->m[0][1];
-	output.m[1][1] = this->m[1][1];
-	output.m[1][2] = this->m[2][1];
-	output.m[1][3] = this->m[3][1];
-
-	output.m[2][0] = this->m[0][2];
-	output.m[2][1] = this->m[1][2];
-	output.m[2][2] = this->m[2][2];
-	output.m[2][3] = this->m[3][2];
-
-	output.m[3][0] = this->m[0][3];
-	output.m[3][1] = this->m[1][3];
-	output.m[3][2] = this->m[2][3];
-	output.m[3][3] = this->m[3][3];
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			output.m[i][j] = this->m[j][i];
+		}
+	}
 
 	return output;
+}
+
+Mat4x4& Mat4x4::operator=(const Mat4x4& rhs)
+{
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			m[i][j] = rhs.m[i][j];
+		}
+	}
+
+	return *this;
+}
+
+bool Mat4x4::operator==(const Mat4x4& rhs) const
+{
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			if ((m[i][j] > rhs.m[i][j] + kThreshold) || (m[i][j] < rhs.m[i][j] - kThreshold))
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+bool Mat4x4::operator!=(const Mat4x4& rhs) const
+{
+	return (!(*this == rhs));
 }

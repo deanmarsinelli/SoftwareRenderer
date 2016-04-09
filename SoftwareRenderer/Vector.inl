@@ -56,16 +56,36 @@ void Vec2<T>::Translate(const T& x_, const T& y_)
 template<typename T>
 Vec2<T> Vec2<T>::Negate() const
 {
-	return Vec2<T>(this->x * -1, this->y * -1);
+	return Vec2<T>(this->x * -1.0, this->y * -1.0);
 }
 
 // Overloaded Operators
 template<typename T>
-Vec2<T> Vec2<T>::operator-(const Vec2<T>& rhs)
+Vec2<T> Vec2<T>::operator+(const Vec2<T>& rhs) const
+{
+	Vec2 result;
+	result.x = this->x + rhs.x;
+	result.y = this->y + rhs.y;
+
+	return result;
+}
+
+template<typename T>
+Vec2<T> Vec2<T>::operator-(const Vec2<T>& rhs) const
 {
 	Vec2 result;
 	result.x = this->x - rhs.x;
 	result.y = this->y - rhs.y;
+
+	return result;
+}
+
+template<typename T>
+Vec2<T> Vec2<T>::operator*(const T rhs) const
+{
+	Vec2 result;
+	result.x = this->x * rhs;
+	result.y = this->y * rhs;
 
 	return result;
 }
@@ -156,7 +176,7 @@ T Vec2<T>::DotProduct(const Vec2<T>& vec) const
 
 // Return a normalized vector
 template<typename T>
-Vec2<T> Vec2<T>::Normal() const
+Vec2<T> Vec2<T>::Normalize() const
 {
 	if (Length())
 	{
@@ -167,17 +187,6 @@ Vec2<T> Vec2<T>::Normal() const
 	return Vec2<T>(0, 0);
 }
 
-// Normalize
-template<typename T>
-void Vec2<T>::Normalize()
-{
-	if (Length())
-	{
-		const T length = 1 / Length();
-		x *= length;
-		y *= length;
-	}
-}
 
 
 //------------------------------------------------
@@ -237,12 +246,34 @@ Vec3<T> Vec3<T>::Negate() const
 
 // Overloaded operators
 template<typename T>
-Vec3<T> Vec3<T>::operator-(const Vec3<T>& rhs)
+Vec3<T> Vec3<T>::operator+(const Vec3<T>& rhs) const
+{
+	Vec3 result;
+	result.x = this->x + rhs.x;
+	result.y = this->y + rhs.y;
+	result.z = this->z + rhs.z;
+
+	return result;
+}
+
+template<typename T>
+Vec3<T> Vec3<T>::operator-(const Vec3<T>& rhs) const
 {
 	Vec3 result;
 	result.x = this->x - rhs.x;
 	result.y = this->y - rhs.y;
 	result.z = this->z - rhs.z;
+
+	return result;
+}
+
+template<typename T>
+Vec3<T> Vec3<T>::operator*(const T rhs) const
+{
+	Vec3 result;
+	result.x = this->x * rhs;
+	result.y = this->y * rhs;
+	result.z = this->z * rhs;
 
 	return result;
 }
@@ -326,7 +357,7 @@ T Vec3<T>::Distance(const Vec3<T>& vec) const
 template<typename T>
 T Vec3<T>::Length() const
 {
-	return sqrt(x * x + y * y + z * z);
+	return sqrt((x * x) + (y * y) + (z * z));
 }
 
 // Dot product
@@ -347,30 +378,18 @@ Vec3<T> Vec3<T>::CrossProduct(const Vec3<T>& vec) const
 		);
 }
 
-// Normal angle
+// Return normalized vector
 template<typename T>
-Vec3<T> Vec3<T>::Normal() const
+Vec3<T> Vec3<T>::Normalize() const
 {
-	if (Length())
+	float length2 = Length();
+	if (length2)
 	{
-		const T length = 1 / Length();
+		const T length = 1 / length2;
 		return Vec3<T>(x * length, y * length, z * length);
 	}
 
 	return Vec3<T>(0, 0, 0);
-}
-
-// Normalize
-template<typename T>
-void Vec3<T>::Normalize()
-{
-	if (Length())
-	{
-		const T length = 1 / Length();
-		x *= length;
-		y *= length;
-		z *= length;
-	}
 }
 
 
@@ -445,13 +464,37 @@ Vec4<T> Vec4<T>::Negate() const
 }
 
 template<typename T>
-Vec4<T> operator-(const Vec4<T>& rhs)
+Vec4<T> Vec4<T>::operator+(const Vec4<T>& rhs) const
+{
+	Vec4 result;
+	result.x = this->x + rhs.x;
+	result.y = this->y + rhs.y;
+	result.z = this->z + rhs.z;
+	result.w = this->w + rhs.w;
+
+	return result;
+}
+
+template<typename T>
+Vec4<T> Vec4<T>::operator-(const Vec4<T>& rhs) const
 {
 	Vec4 result;
 	result.x = this->x - rhs.x;
 	result.y = this->y - rhs.y;
 	result.z = this->z - rhs.z;
 	result.w = this->w - rhs.w;
+
+	return result;
+}
+
+template<typename T>
+Vec4<T> Vec4<T>::operator*(const T rhs) const
+{
+	Vec4 result;
+	result.x = this->x * rhs;
+	result.y = this->y * rhs;
+	result.z = this->z * rhs;
+	result.w = this->w * rhs;
 
 	return result;
 }
@@ -546,7 +589,7 @@ T Vec4<T>::DotProduct(const Vec4<T>& vec) const
 }
 
 template<typename T>
-Vec4<T> Vec4<T>::Normal() const
+Vec4<T> Vec4<T>::Normalize() const
 {
 	if (Length())
 	{
@@ -555,17 +598,4 @@ Vec4<T> Vec4<T>::Normal() const
 	}
 
 	return Vec4<T>(0, 0, 0, 0);
-}
-
-template<typename T>
-void Vec4<T>::Normalize()
-{
-	if (Length())
-	{
-		const T length = 1 / Length();
-		x *= length;
-		y *= length;
-		z *= length;
-		w *= length;
-	}
 }

@@ -32,7 +32,9 @@ public:
 	Vec2<T> Negate() const;
 
 	// Overloaded operators
-	Vec2<T> operator-(const Vec2<T>& rhs);
+	Vec2<T> operator+(const Vec2<T>& rhs) const;
+	Vec2<T> operator-(const Vec2<T>& rhs) const;
+	Vec2<T> operator*(const T rhs) const;
 	Vec2<T>& operator+=(const Vec2<T>& vec);
 	Vec2<T>& operator-=(const Vec2<T>& vec);
 	Vec2<T>& operator*=(const Vec2<T>& vec);
@@ -45,8 +47,7 @@ public:
 	T Distance(const Vec2<T>& vec) const;
 	T Length() const;
 	T DotProduct(const Vec2<T>& vec) const;
-	Vec2<T> Normal() const;
-	void Normalize();
+	Vec2<T> Normalize() const;
 };
 
 
@@ -73,7 +74,9 @@ public:
 	Vec3<T> Negate() const;
 
 	// Overloaded operators
-	Vec3<T> operator-(const Vec3<T>& rhs);
+	Vec3<T> operator+(const Vec3<T>& rhs) const;
+	Vec3<T> operator-(const Vec3<T>& rhs) const;
+	Vec3<T> operator*(const T rhs) const;
 	Vec3<T>& operator+=(const Vec3<T>& vec);
 	Vec3<T>& operator-=(const Vec3<T>& vec);
 	Vec3<T>& operator*=(const Vec3<T>& vec);
@@ -88,8 +91,7 @@ public:
 	T DotProduct(const Vec3<T>& vec) const;
 
 	Vec3<T> CrossProduct(const Vec3<T>& vec) const;
-	Vec3<T> Normal() const;
-	void Normalize();
+	Vec3<T> Normalize() const;
 };
 
 
@@ -105,7 +107,7 @@ public:
 	Vec4();
 	Vec4(const Vec3<T>& vec);
 	Vec4(const Vec4<T>& vec);
-	Vec4(const T& x, const T& y, const T& z, const T& w);
+	Vec4(const T& x, const T& y, const T& z, const T& w = 1.0);
 
 	// Setters and Getters
 	void Set(const T& x, const T& y, const T& z, const T& w);
@@ -118,7 +120,9 @@ public:
 	Vec4<T> Negate() const;
 
 	// Overloaded operators
-	Vec4<T> operator-(const Vec4<T>& rhs);
+	Vec4<T> operator+(const Vec4<T>& rhs) const;
+	Vec4<T> operator-(const Vec4<T>& rhs) const;
+	Vec4<T> operator*(const T rhs) const;
 	Vec4<T>& operator+=(const Vec4<T>& vec);
 	Vec4<T>& operator-=(const Vec4<T>& vec);
 	Vec4<T>& operator*=(const Vec4<T>& vec);
@@ -132,8 +136,7 @@ public:
 	T Length() const;
 	T DotProduct(const Vec4<T>& vec) const;
 
-	Vec4<T> Normal() const;
-	void Normalize();
+	Vec4<T> Normalize() const;
 };
 
 
@@ -147,3 +150,17 @@ typedef Vec3<float> Vector3F;
 
 typedef Vec4<double> Vector4D;
 typedef Vec4<float> Vector4F;
+
+
+// component wise multiplication
+template <typename T>
+inline Vec4<T> operator*(const Vec4<T>& lhs, const Vec4<T>& rhs)
+{
+	Vec4<T> result;
+	result.x = lhs.x * rhs.x;
+	result.y = lhs.y * rhs.y;
+	result.z = lhs.z * rhs.z;
+	result.w = lhs.w * rhs.w;
+
+	return result;
+}
