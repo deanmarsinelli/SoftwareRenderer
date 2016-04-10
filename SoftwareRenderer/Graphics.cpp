@@ -442,11 +442,11 @@ void Graphics::DrawWireFrame(const Triangle& triangle)
 
 void Graphics::DrawTriangleColored(const Triangle& triangle)
 {
-	Edge edges[3] =
+	EdgeColor edges[3] =
 	{
-		Edge((int)triangle.p0.position.x, (int)triangle.p0.position.y, triangle.p0.position.z, triangle.p0.color, (int)triangle.p1.position.x, (int)triangle.p1.position.y, triangle.p1.position.z, triangle.p1.color),
-		Edge((int)triangle.p1.position.x, (int)triangle.p1.position.y, triangle.p1.position.z, triangle.p1.color, (int)triangle.p2.position.x, (int)triangle.p2.position.y, triangle.p2.position.z, triangle.p2.color),
-		Edge((int)triangle.p2.position.x, (int)triangle.p2.position.y, triangle.p2.position.z, triangle.p2.color, (int)triangle.p0.position.x, (int)triangle.p0.position.y, triangle.p0.position.z, triangle.p0.color)
+		EdgeColor((int)triangle.p0.position.x, (int)triangle.p0.position.y, triangle.p0.position.z, triangle.p0.color, (int)triangle.p1.position.x, (int)triangle.p1.position.y, triangle.p1.position.z, triangle.p1.color),
+		EdgeColor((int)triangle.p1.position.x, (int)triangle.p1.position.y, triangle.p1.position.z, triangle.p1.color, (int)triangle.p2.position.x, (int)triangle.p2.position.y, triangle.p2.position.z, triangle.p2.color),
+		EdgeColor((int)triangle.p2.position.x, (int)triangle.p2.position.y, triangle.p2.position.z, triangle.p2.color, (int)triangle.p0.position.x, (int)triangle.p0.position.y, triangle.p0.position.z, triangle.p0.color)
 	};
 
 	int maxLength = 0;
@@ -466,8 +466,8 @@ void Graphics::DrawTriangleColored(const Triangle& triangle)
 	int shortEdge0 = (longEdge + 1) % 3;
 	int shortEdge1 = (longEdge + 2) % 3;
 
-	DrawSpans(edges[longEdge], edges[shortEdge0]);
-	DrawSpans(edges[longEdge], edges[shortEdge1]);
+	DrawSpansColor(edges[longEdge], edges[shortEdge0]);
+	DrawSpansColor(edges[longEdge], edges[shortEdge1]);
 }
 
 void Graphics::DrawTriangleTextured(const Triangle& triangle)
@@ -532,7 +532,7 @@ void Graphics::DrawLine(float x0, float y0, const Vector4F& color0, float x1, fl
 	}
 }
 
-void Graphics::DrawSpans(const Edge& e0, const Edge& e1)
+void Graphics::DrawSpansColor(const EdgeColor& e0, const EdgeColor& e1)
 {
 	// if the y difference of either edge is 0, there are no spans to draw
 	float e0_dy = (float)(e0.y1 - e0.y0);
@@ -561,10 +561,10 @@ void Graphics::DrawSpans(const Edge& e0, const Edge& e1)
 	for (int y = e1.y0; y < e1.y1; y++)
 	{
 		// create and draw span
-		Span span(e0.x0 + (int)(e0_dx * factor0), e0.z0 + (e0_dz * factor0), e0.color0 + (e0_dcolor * factor0),
+		SpanColor span(e0.x0 + (int)(e0_dx * factor0), e0.z0 + (e0_dz * factor0), e0.color0 + (e0_dcolor * factor0),
 			e1.x0 + (int)(e1_dx * factor1), e1.z0 + (e1_dz * factor1), e1.color0 + (e1_dcolor * factor1));
 
-		DrawSpan(span, y);
+		DrawSpanColor(span, y);
 
 		// increase factors
 		factor0 += factorStep0;
@@ -572,7 +572,12 @@ void Graphics::DrawSpans(const Edge& e0, const Edge& e1)
 	}
 }
 
-void Graphics::DrawSpan(const Span& span, int y)
+void Graphics::DrawSpansTexture(const EdgeTexture& e0, const EdgeTexture& e1)
+{
+	
+}
+
+void Graphics::DrawSpanColor(const SpanColor& span, int y)
 {
 	int dx = span.x1 - span.x0;
 	float dz = span.z1 - span.z0;
@@ -608,6 +613,11 @@ void Graphics::DrawSpan(const Span& span, int y)
 		depth += depthStep;
 		factor += factorStep;
 	}
+}
+
+void Graphics::DrawSpanTexture(const SpanTexture& span, int y)
+{
+	
 }
 
 void Graphics::DrawPixel(int x, int y, const Vector4F& color)

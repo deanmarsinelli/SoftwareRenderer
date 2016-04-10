@@ -50,8 +50,10 @@ private:
 	void DrawTriangleColored(const Triangle& triangle);
 	void DrawTriangleTextured(const Triangle& triangle);
 	void DrawLine(float x0, float y0, const Vector4F& color0, float x1, float y1, const Vector4F& color1);
-	void DrawSpans(const Edge& e0, const Edge& e1);
-	void DrawSpan(const Span& span, int y);
+	void DrawSpansColor(const EdgeColor& e0, const EdgeColor& e1);
+	void DrawSpanColor(const SpanColor& span, int y);
+	void DrawSpansTexture(const EdgeTexture& e0, const EdgeTexture& e1);
+	void DrawSpanTexture(const SpanTexture& span, int y);
 	void DrawPixel(int x, int y, const Vector4F& color);
 	
 public:
