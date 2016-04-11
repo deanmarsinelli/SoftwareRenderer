@@ -1,10 +1,11 @@
-#pragma once
 /*
 	Matrix.h
 	Author: Dean Marsinelli
 
 	This file contains definitions for 4x4 matrices.
 */
+
+#pragma once
 
 #include "Vector.h"
 

@@ -1,3 +1,10 @@
+/*
+	WinMain.cpp
+	Author: Dean Marsinelli
+
+	This file provides the entry-point into the program.
+*/
+
 #include <Windows.h>
 
 #include "Game.h"

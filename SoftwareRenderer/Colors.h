@@ -1,3 +1,10 @@
+/*
+	Colors.h
+	Author: Dean Marsinelli
+
+	Some common color combinations.
+*/
+
 #pragma once
 
 #include "Vector.h"

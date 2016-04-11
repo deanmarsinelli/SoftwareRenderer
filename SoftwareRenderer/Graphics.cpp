@@ -1,6 +1,11 @@
+/*
+	Graphics.cpp
+	Author: Dean Marsinelli
+*/
+
 #include <assert.h>
+
 #include "Graphics.h"
-#include "Point.h"
 
 #pragma comment(lib, "d3d9.lib")
 
@@ -513,11 +518,13 @@ void Graphics::DrawLine(float x0, float y0, const Vector4F& color0, float x1, fl
 	{
 		float ymin, ymax;
 
-		if (y0 < y1) {
+		if (y0 < y1) 
+		{
 			ymin = y0;
 			ymax = y1;
 		}
-		else {
+		else 
+		{
 			ymin = y1;
 			ymax = y0;
 		}
@@ -572,11 +579,6 @@ void Graphics::DrawSpansColor(const EdgeColor& e0, const EdgeColor& e1)
 	}
 }
 
-void Graphics::DrawSpansTexture(const EdgeTexture& e0, const EdgeTexture& e1)
-{
-	
-}
-
 void Graphics::DrawSpanColor(const SpanColor& span, int y)
 {
 	int dx = span.x1 - span.x0;
@@ -585,7 +587,6 @@ void Graphics::DrawSpanColor(const SpanColor& span, int y)
 		return;
 
 	Vector4F dcolor = span.color1 - span.color0;
-
 	float factor = 0.0f;
 	float factorStep = 1.0f / (float)dx;
 
@@ -607,12 +608,16 @@ void Graphics::DrawSpanColor(const SpanColor& span, int y)
 				depthBuffer[x + screenWidth * y] = depth;
 				DrawPixel(x, y, span.color0 + (dcolor * factor));
 			}
-
 		}
-		
+
 		depth += depthStep;
 		factor += factorStep;
 	}
+}
+
+void Graphics::DrawSpansTexture(const EdgeTexture& e0, const EdgeTexture& e1)
+{
+	
 }
 
 void Graphics::DrawSpanTexture(const SpanTexture& span, int y)

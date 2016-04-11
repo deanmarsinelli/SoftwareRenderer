@@ -1,3 +1,10 @@
+/*
+	Texture.h
+	Author: Dean Marsinelli
+
+	Function for loading a bitmap texture.
+*/
+
 #pragma once
 
 #include <d3d9.h>

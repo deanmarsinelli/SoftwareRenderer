@@ -1,3 +1,11 @@
+/*
+	Triangle.h
+	Author: Dean Marsinelli
+
+	Triangle struct and edge/span classes for rasterizing
+	triangles with color and texture.
+*/
+
 #pragma once
 
 #include "Vertex.h"

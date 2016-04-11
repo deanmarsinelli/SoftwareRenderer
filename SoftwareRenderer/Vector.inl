@@ -1,8 +1,9 @@
-#pragma once
 /*
 	Vector.inl
 	Author: Dean Marsinelli
 */
+
+#pragma once
 
 const double marginOfError = 0.0001;
 

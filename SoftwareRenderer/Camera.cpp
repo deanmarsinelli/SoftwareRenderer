@@ -1,3 +1,8 @@
+/*
+	Camera.cpp
+	Author: Dean Marsinelli
+*/
+
 #include "Camera.h"
 
 Camera::Camera(const Mat4x4& worldMatrix) :

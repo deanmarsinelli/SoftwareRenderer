@@ -1,3 +1,10 @@
+/*
+	Box.h
+	Author: Dean Marsinelli
+
+	6-sided cube for testing the renderer.
+*/
+
 #pragma once
 
 #include "GameObject.h"

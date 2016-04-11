@@ -1,3 +1,12 @@
+/*
+	Graphics.h
+	Author: Dean Marsinelli
+
+	Interface into the graphics system. This class is supposed
+	to resemble a hardware rendering system where the user
+	binds resources and draws.
+*/
+
 #pragma once
 
 #include <d3d9.h>
@@ -7,7 +16,7 @@
 #include "Triangle.h"
 #include "Vertex.h"
 
-#define _PI		3.141592654f
+#define _PI			3.141592654f
 #define _2PI		6.283185307f
 #define DegToRad(x) x * (_PI / 180)
 

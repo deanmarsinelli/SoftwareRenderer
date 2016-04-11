@@ -1,4 +1,3 @@
-#pragma once
 /*
 	Vector.h
 	Author: Dean Marsinelli
@@ -6,6 +5,8 @@
 	This file contains definitions for 2D, 3D,
 	and 4D vectors.
 */
+
+#pragma once
 
 #include <cmath>
 

@@ -1,5 +1,11 @@
-#include <stdio.h>
+/*
+	Texture.cpp
+	Author: Dean Marsinelli
+*/
+
 #include <assert.h>
+#include <stdio.h>
+
 #include "Texture.h"
 
 void LoadTexture(const char* fileName, Texture texture)
