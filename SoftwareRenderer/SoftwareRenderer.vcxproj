@@ -16,7 +16,6 @@
     <ClInclude Include="Colors.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="Point.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Matrix.h" />

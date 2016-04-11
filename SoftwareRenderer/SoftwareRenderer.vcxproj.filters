@@ -44,9 +44,6 @@
     <ClInclude Include="Colors.h">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Point.h">
-      <Filter>Math</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Vector.inl">
