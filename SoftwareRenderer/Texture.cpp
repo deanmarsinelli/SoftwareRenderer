@@ -1,6 +1,9 @@
 /*
 	Texture.cpp
 	Author: Dean Marsinelli
+
+	Inspired by Chili @ http://www.planetchili.net/ with bitmap info
+	from https://en.wikipedia.org/wiki/BMP_file_format
 */
 
 #include <assert.h>

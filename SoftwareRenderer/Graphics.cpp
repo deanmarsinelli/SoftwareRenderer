@@ -1,6 +1,9 @@
 /*
 	Graphics.cpp
 	Author: Dean Marsinelli
+
+	View and Projection matrix methods inspired by Microsoft's non-sse
+	implementations for view and project matrices in xnamath. 
 */
 
 #include <assert.h>
