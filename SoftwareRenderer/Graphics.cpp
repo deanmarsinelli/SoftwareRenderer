@@ -4,6 +4,9 @@
 
 	View and Projection matrix methods inspired by Microsoft's non-sse
 	implementations for view and project matrices in xnamath.
+
+	Triangle Rasterization influenced by the implementation at:
+	http://joshbeam.com/articles/triangle_rasterization/
 */
 
 #include <assert.h>
