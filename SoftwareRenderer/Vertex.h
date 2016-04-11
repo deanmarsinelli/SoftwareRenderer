@@ -12,6 +12,9 @@
 
 #include "Vector.h"
 
+typedef Vec2<int> TexCoord;
+typedef unsigned long Index;
+
 struct Vertex
 {
 	Vector4F position;  // just leave w as 1
@@ -19,8 +22,5 @@ struct Vertex
 	TexCoord texCoord;
 };
 
-typedef unsigned long Index;
-
 typedef std::vector<Vertex> VertexBuffer;
 typedef std::vector<Index> IndexBuffer;
-typedef Vec2<int> TexCoord;
