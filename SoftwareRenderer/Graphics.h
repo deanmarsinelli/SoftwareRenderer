@@ -33,14 +33,14 @@ public:
 	Graphics(HWND hWnd, int width, int height);
 	~Graphics();
 	
-	static Texture LoadTexture(const char* fileName, unsigned int width, unsigned int height);
+	static Texture LoadTexture(const WCHAR* fileName);
 	static Mat4x4 PerspectiveMatrixLH(FLOAT verticalFov, FLOAT aspectRatio, FLOAT nearZ, FLOAT farZ);
 	static Mat4x4 LookAtLH(const Vector3F& position, const Vector3F& target, const Vector3F& upDirection);
 
 	// input setup
 	void BindVertexBuffer(VertexBuffer* buffer);
 	void BindIndexBuffer(IndexBuffer* buffer);
-	void BindTexture(Texture texture);
+	void BindTexture(Texture texture, int width, int height);
 	void BindMatrix(Mat4x4* mat, Matrix type);
 	void BindMatrices(Mat4x4* world, Mat4x4* view, Mat4x4* projection);
 
@@ -63,8 +63,10 @@ private:
 	void DrawSpanColor(const SpanColor& span, int y);
 	void DrawSpansTexture(const EdgeTexture& e0, const EdgeTexture& e1);
 	void DrawSpanTexture(const SpanTexture& span, int y);
+	D3DCOLOR SampleTexture(TexCoord& texcoord);
 	void DrawPixel(int x, int y, const Vector4F& color);
-	
+	void DrawPixel(int x, int y, const D3DCOLOR& color);
+
 public:
 	bool wireFrame;
 
@@ -78,7 +80,9 @@ private:
 	VertexBuffer* vertexBuffer;
 	IndexBuffer* indexBuffer;
 	Texture texture;
-	
+	int texWidth;
+	int texHeight;
+
 	Mat4x4* worldMatrix;
 	Mat4x4* viewMatrix;
 	Mat4x4* projMatrix;

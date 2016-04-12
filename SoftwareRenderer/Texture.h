@@ -38,4 +38,4 @@ struct Pixel24
 	unsigned char red;
 };
 
-void LoadTexture(const char* fileName, Texture texture);
+void LoadTexture(const WCHAR* fileName, Texture* texture);

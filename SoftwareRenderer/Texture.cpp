@@ -1,43 +1,48 @@
 /*
 	Texture.cpp
 	Author: Dean Marsinelli
-
-	Inspired by Chili @ http://www.planetchili.net/ with bitmap info
-	from https://en.wikipedia.org/wiki/BMP_file_format
 */
 
 #include <assert.h>
-#include <stdio.h>
+#include <Windows.h>
+#include <gdiplus.h>
 
 #include "Texture.h"
 
-void LoadTexture(const char* fileName, Texture texture)
+#pragma comment( lib,"gdiplus.lib" )
+
+void LoadTexture(const WCHAR* fileName, Texture* texture)
 {
-	FILE* bmpFile = fopen(fileName, "rb");
+	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+	ULONG_PTR gdiplusToken;
+	Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 
-	char signature[2];
-	fread(signature, sizeof(char), 2, bmpFile);
-	assert(signature[0] == 'B' && signature[1] == 'M');
+	unsigned int width = 0;
+	unsigned int height = 0;
+	unsigned int pitch = 0;
+	D3DCOLOR* buffer = nullptr;
 
-	BitmapFileHeader fileHeader;
-	fread(&fileHeader, sizeof(fileHeader), 1, bmpFile);
-
-	BitmapInfoHeader infoHeader;
-	fread(&infoHeader, sizeof(infoHeader), 1, bmpFile);
-
-	fseek(bmpFile, fileHeader.offsetToPixelData, SEEK_SET);
-
-	int nPaddingBytesPerRow = (4 - ((infoHeader.width * 3) % 4)) % 4;
-	for (int y = infoHeader.height - 1; y >= 0; y--)
 	{
-		for (int x = 0; x < infoHeader.width; x++)
+		Gdiplus::Bitmap bitmap(fileName);
+		pitch = width = bitmap.GetWidth();
+		height = bitmap.GetHeight();
+		buffer = new D3DCOLOR[pitch * height];
+
+		for (unsigned int y = 0; y < height; y++)
 		{
-			Pixel24 pixel;
-			fread(&pixel, sizeof(pixel), 1, bmpFile);
-			texture[x + y * infoHeader.width] = D3DCOLOR_XRGB(pixel.red, pixel.green, pixel.blue);
+			for (unsigned int x = 0; x < width; x++)
+			{
+				Gdiplus::Color c;
+				bitmap.GetPixel(x, y, &c);
+				int r = c.GetR();
+				int g = c.GetG();
+				int b = c.GetB();
+				D3DCOLOR color = D3DCOLOR_XRGB(r, g, b);
+				buffer[x + pitch * y] = color;
+			}
 		}
-		fseek(bmpFile, nPaddingBytesPerRow, SEEK_CUR);
 	}
 
-	fclose(bmpFile);
+	Gdiplus::GdiplusShutdown(gdiplusToken);
+	*texture = buffer;
 }

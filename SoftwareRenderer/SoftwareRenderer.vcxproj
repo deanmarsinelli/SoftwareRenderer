@@ -39,6 +39,9 @@
     <ClCompile Include="Triangle.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="crate.bmp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B3BEB991-42EC-4625-B9F5-11C6377396D5}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

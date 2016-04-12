@@ -9,14 +9,16 @@
 Box::Box(const Mat4x4& worldMatrix) :
 	GameObject(worldMatrix)
 {
-	vBuffer.push_back({ Vector4F(-1.0f, -1.0f, -1.0f), Colors::White });
-	vBuffer.push_back({ Vector4F(-1.0f, +1.0f, -1.0f), Colors::Black });
-	vBuffer.push_back({ Vector4F(+1.0f, +1.0f, -1.0f), Colors::Red });
-	vBuffer.push_back({ Vector4F(+1.0f, -1.0f, -1.0f), Colors::Green });
-	vBuffer.push_back({ Vector4F(-1.0f, -1.0f, +1.0f), Colors::Blue });
-	vBuffer.push_back({ Vector4F(-1.0f, +1.0f, +1.0f), Colors::Yellow });
-	vBuffer.push_back({ Vector4F(+1.0f, +1.0f, +1.0f), Colors::Cyan });
-	vBuffer.push_back({ Vector4F(+1.0f, -1.0f, +1.0f), Colors::Magenta });
+	vBuffer = {
+		{ Vector4F(-1.0f, -1.0f, -1.0f), Colors::White, TexCoord(0.0f, 1.0f) },
+		{ Vector4F(-1.0f, +1.0f, -1.0f), Colors::Black, TexCoord(0.0f, 0.0f) },
+		{ Vector4F(+1.0f, +1.0f, -1.0f), Colors::Red, TexCoord(1.0f, 0.0f) },
+		{ Vector4F(+1.0f, -1.0f, -1.0f), Colors::Green, TexCoord(1.0f, 1.0f) },
+		{ Vector4F(-1.0f, -1.0f, +1.0f), Colors::Blue, TexCoord(1.0f, 1.0f) },
+		{ Vector4F(-1.0f, +1.0f, +1.0f), Colors::Yellow, TexCoord(1.0f, 0.0f) },
+		{ Vector4F(+1.0f, +1.0f, +1.0f), Colors::Cyan, TexCoord(0.0f, 0.0f) },
+		{ Vector4F(+1.0f, -1.0f, +1.0f), Colors::Magenta, TexCoord(0.0f, 1.0f) }
+	};
 
 	iBuffer = {
 		// front face
@@ -38,4 +40,8 @@ Box::Box(const Mat4x4& worldMatrix) :
 		4, 0, 3,
 		4, 3, 7
 	};
+
+	texture = Graphics::LoadTexture(L"crate.bmp");
+	texWidth = 256;
+	texHeight = 256;
 }

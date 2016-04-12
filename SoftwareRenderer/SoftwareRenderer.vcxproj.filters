@@ -76,4 +76,7 @@
       <Filter>Graphics</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="crate.bmp" />
+  </ItemGroup>
 </Project>

@@ -12,7 +12,7 @@
 
 #include "Vector.h"
 
-typedef Vec2<int> TexCoord;
+typedef Vector2F TexCoord;
 typedef unsigned long Index;
 
 struct Vertex

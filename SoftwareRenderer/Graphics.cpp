@@ -131,10 +131,10 @@ Graphics::~Graphics()
 	}
 }
 
-Texture Graphics::LoadTexture(const char* fileName, unsigned int width, unsigned int height)
+Texture Graphics::LoadTexture(const WCHAR* fileName)
 {
-	Texture tex = new D3DCOLOR[width * height];
-	::LoadTexture(fileName, tex);
+	Texture tex = nullptr;
+	::LoadTexture(fileName, &tex);
 
 	return tex;
 }
@@ -249,9 +249,11 @@ void Graphics::BindIndexBuffer(IndexBuffer* buffer)
 	indexBuffer = buffer;
 }
 
-void Graphics::BindTexture(Texture texture)
+void Graphics::BindTexture(Texture _texture, int width, int height)
 {
-	this->texture = texture;
+	texture = _texture;
+	texWidth = width;
+	texHeight = height;
 }
 
 void Graphics::BindMatrix(Mat4x4* mat, Matrix type)
@@ -382,6 +384,9 @@ Triangle Graphics::TransformTriangle(const Triangle& triangle)
 	tri.p0.color = triangle.p0.color;
 	tri.p1.color = triangle.p1.color;
 	tri.p2.color = triangle.p2.color;
+	tri.p0.texCoord = triangle.p0.texCoord;
+	tri.p1.texCoord = triangle.p1.texCoord;
+	tri.p2.texCoord = triangle.p2.texCoord;
 
 	return tri;
 }
@@ -420,6 +425,9 @@ Triangle Graphics::PerspectiveDivide(const Triangle& triangle)
 	tri.p0.color = triangle.p0.color;
 	tri.p1.color = triangle.p1.color;
 	tri.p2.color = triangle.p2.color;
+	tri.p0.texCoord = triangle.p0.texCoord;
+	tri.p1.texCoord = triangle.p1.texCoord;
+	tri.p2.texCoord = triangle.p2.texCoord;
 
 	return tri;
 }
@@ -440,6 +448,9 @@ Triangle Graphics::GetWindowCoordinates(const Triangle& triangle)
 	tri.p0.color = triangle.p0.color;
 	tri.p1.color = triangle.p1.color;
 	tri.p2.color = triangle.p2.color;
+	tri.p0.texCoord = triangle.p0.texCoord;
+	tri.p1.texCoord = triangle.p1.texCoord;
+	tri.p2.texCoord = triangle.p2.texCoord;
 
 	return tri;
 }
@@ -483,7 +494,32 @@ void Graphics::DrawTriangleColored(const Triangle& triangle)
 
 void Graphics::DrawTriangleTextured(const Triangle& triangle)
 {
+	EdgeTexture edges[3] =
+	{
+		EdgeTexture((int)triangle.p0.position.x, (int)triangle.p0.position.y, triangle.p0.position.z, triangle.p0.texCoord, (int)triangle.p1.position.x, (int)triangle.p1.position.y, triangle.p1.position.z, triangle.p1.texCoord),
+		EdgeTexture((int)triangle.p1.position.x, (int)triangle.p1.position.y, triangle.p1.position.z, triangle.p1.texCoord, (int)triangle.p2.position.x, (int)triangle.p2.position.y, triangle.p2.position.z, triangle.p2.texCoord),
+		EdgeTexture((int)triangle.p2.position.x, (int)triangle.p2.position.y, triangle.p2.position.z, triangle.p2.texCoord, (int)triangle.p0.position.x, (int)triangle.p0.position.y, triangle.p0.position.z, triangle.p0.texCoord)
+	};
 
+	int maxLength = 0;
+	int longEdge = 0;
+
+	// find edge with the greatest length in the y axis
+	for (int i = 0; i < 3; i++)
+	{
+		int length = edges[i].y1 - edges[i].y0;
+		if (length > maxLength)
+		{
+			maxLength = length;
+			longEdge = i;
+		}
+	}
+
+	int shortEdge0 = (longEdge + 1) % 3;
+	int shortEdge1 = (longEdge + 2) % 3;
+
+	DrawSpansTexture(edges[longEdge], edges[shortEdge0]);
+	DrawSpansTexture(edges[longEdge], edges[shortEdge1]);
 }
 
 void Graphics::DrawLine(float x0, float y0, const Vector4F& color0, float x1, float y1, const Vector4F& color1)
@@ -623,12 +659,98 @@ void Graphics::DrawSpanColor(const SpanColor& span, int y)
 
 void Graphics::DrawSpansTexture(const EdgeTexture& e0, const EdgeTexture& e1)
 {
-	
+		// if the y difference of either edge is 0, there are no spans to draw
+	float e0_dy = (float)(e0.y1 - e0.y0);
+	if (e0_dy == 0.0f)
+		return;
+
+	float e1_dy = (float)(e1.y1 - e1.y0);
+	if (e1_dy == 0.0f)
+		return;
+
+	// calculate differences of x position and colors
+	float e0_dx = (float)(e0.x1 - e0.x0);
+	float e1_dx = (float)(e1.x1 - e1.x0);
+	float e0_dz = (float)(e0.z1 - e0.z0);
+	float e1_dz = (float)(e1.z1 - e1.z0);
+	TexCoord e0_dtexcoord = (e0.texCoord1 - e0.texCoord0);
+	TexCoord e1_dtexcoord = (e1.texCoord1 - e1.texCoord0);
+
+	// calculate interpolation and step factors
+	float factor0 = (float)(e1.y0 - e0.y0) / e0_dy;
+	float factorStep0 = 1.0f / e0_dy;
+	float factor1 = 0.0f;
+	float factorStep1 = 1.0f / e1_dy;
+
+	// loop through each row between edges and draw
+	for (int y = e1.y0; y < e1.y1; y++)
+	{
+		// create and draw span
+		SpanTexture span(e0.x0 + (int)(e0_dx * factor0), e0.z0 + (e0_dz * factor0), e0.texCoord0 + (e0_dtexcoord * factor0),
+			e1.x0 + (int)(e1_dx * factor1), e1.z0 + (e1_dz * factor1), e1.texCoord0 + (e1_dtexcoord * factor1));
+
+		DrawSpanTexture(span, y);
+
+		// increase factors
+		factor0 += factorStep0;
+		factor1 += factorStep1;
+	}
 }
 
 void Graphics::DrawSpanTexture(const SpanTexture& span, int y)
 {
-	
+	int dx = span.x1 - span.x0;
+	float dz = span.z1 - span.z0;
+	if (dx == 0)
+		return;
+
+	TexCoord dtexcord = span.texCoord1 - span.texCoord0;
+	float factor = 0.0f;
+	float factorStep = 1.0f / (float)dx;
+
+	float depth = span.z0;
+	float depthStep;
+	if (dz != 0.0f)
+		depthStep = dz / dx;
+	else
+		depthStep = 0.0f;
+
+	// draw each pixel in the row
+	for (int x = span.x0; x < span.x1; x++)
+	{
+		if (x >= 0 && y >= 0 && x < screenWidth && y < screenHeight)
+		{
+			float currentDepth = depthBuffer[x + screenWidth * y];
+			if (depth < currentDepth)
+			{
+				depthBuffer[x + screenWidth * y] = depth;
+				TexCoord texcoord = span.texCoord0 + (dtexcord * factor);
+				D3DCOLOR color = SampleTexture(texcoord);
+				DrawPixel(x, y, color);
+			}
+		}
+
+		depth += depthStep;
+		factor += factorStep;
+	}
+}
+
+D3DCOLOR Graphics::SampleTexture(TexCoord& texcoord)
+{
+	while (texcoord.x > 1.0f)
+	{
+		texcoord.x -= 1.0f;
+	}
+	while (texcoord.y > 1.0f)
+	{
+		texcoord.y -= 1.0f;
+	}
+
+	int x = (int)(texcoord.x * (float)(texWidth));
+	int y = (int)(texcoord.y * (float)(texHeight));
+	D3DCOLOR color = texture[x + texWidth * y];
+
+	return color;
 }
 
 void Graphics::DrawPixel(int x, int y, const Vector4F& color)
@@ -644,4 +766,14 @@ void Graphics::DrawPixel(int x, int y, const Vector4F& color)
 
 	D3DCOLOR col = D3DCOLOR_XRGB(r, g, b);
 	frameBuffer[x + screenWidth * y] = col;
+}
+
+void Graphics::DrawPixel(int x, int y, const D3DCOLOR& color)
+{
+	if (!(x >= 0 && y >= 0 && x < screenWidth && y < screenHeight))
+	{
+		return;
+	}
+
+	frameBuffer[x + screenWidth * y] = color;
 }

@@ -29,4 +29,6 @@ protected:
 	Mat4x4 worldMat;
 	VertexBuffer vBuffer;
 	IndexBuffer iBuffer;
+	Texture texture;
+	int texWidth, texHeight;
 };
