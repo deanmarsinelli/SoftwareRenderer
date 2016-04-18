@@ -24,7 +24,7 @@ int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR, INT)
 	wr.bottom = 600 + wr.top;
 	AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
 
-	HWND hWnd = CreateWindowW(L"SoftwareRenderer", L"Software Renderer",
+	HWND hWnd = CreateWindow(L"SoftwareRenderer", L"Software Renderer",
 		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, wr.left, wr.top, wr.right - wr.left, wr.bottom - wr.top,
 		NULL, NULL, wc.hInstance, NULL);
 

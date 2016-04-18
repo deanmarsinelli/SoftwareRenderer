@@ -398,9 +398,9 @@ bool Graphics::ClipTriangle(const Triangle& triangle)
 		abs(triangle.p0.position.z) > abs(triangle.p0.position.w)) &&
 		(abs(triangle.p1.position.x) > abs(triangle.p1.position.w) ||
 		abs(triangle.p1.position.y) > abs(triangle.p1.position.w) ||
-		abs(triangle.p1.position.z) > abs(triangle.p0.position.w)) &&
+		abs(triangle.p1.position.z) > abs(triangle.p1.position.w)) &&
 		(abs(triangle.p2.position.x) > abs(triangle.p2.position.w) ||
-		abs(triangle.p2.position.y) > abs(triangle.p0.position.w) ||
+		abs(triangle.p2.position.y) > abs(triangle.p2.position.w) ||
 		abs(triangle.p2.position.z) > abs(triangle.p2.position.w)))
 	{
 		return true;
