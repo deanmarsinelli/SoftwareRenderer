@@ -37,6 +37,9 @@ public:
 	/// Return the forward vector for the matrix
 	Vector3F GetDirection() const;
 
+	/// Return the right vector for the matrix
+	Vector3F GetRight() const;
+
 	/// Return the yaw, pitch and roll values
 	Vector3F GetYawPitchRoll() const;
 

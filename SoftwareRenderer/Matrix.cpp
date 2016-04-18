@@ -105,6 +105,14 @@ Vector3F Mat4x4::GetDirection() const
 	return forward;
 }
 
+Vector3F Mat4x4::GetRight() const
+{
+	Mat4x4 justRot = *this;
+	justRot.SetPosition(Vector3F(0.0f, 0.0f, 0.0f));
+	Vector3F right = justRot.Transform(Vector3F(1.0f, 0.0f, 0.0f));
+	return right;
+}
+
 Vector3F Mat4x4::GetYawPitchRoll() const
 {
 	float yaw, pitch, roll;

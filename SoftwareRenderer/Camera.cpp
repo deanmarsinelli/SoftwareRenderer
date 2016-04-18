@@ -34,6 +34,11 @@ Vector3F Camera::GetDirection()
 	return worldMat.GetDirection();
 }
 
+Vector3F Camera::GetRight()
+{
+	return worldMat.GetRight();
+}
+
 Vector3F Camera::GetYawPitchRoll()
 {
 	return worldMat.GetYawPitchRoll();

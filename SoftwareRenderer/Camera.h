@@ -21,6 +21,7 @@ public:
 	void SetPosition(const Vector3F& position);
 	Vector3F GetPosition();
 	Vector3F GetDirection();
+	Vector3F GetRight();
 	Vector3F GetYawPitchRoll();
 
 	void Update(float dt);

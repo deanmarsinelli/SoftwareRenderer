@@ -54,7 +54,8 @@ void Game::Draw()
 
 	Vector3F pos = camera->GetPosition();
 	Vector3F dir = camera->GetDirection();
-	Mat4x4 viewMatrix = Graphics::LookAtLH(pos, dir, { 0.0f, 1.0f, 0.0f });
+
+	Mat4x4 viewMatrix = Graphics::LookAtLH(pos, pos + dir, { 0.0f, 1.0f, 0.0f });
 	graphics->BindMatrix(&viewMatrix, VIEW);
 
 	for (auto it = gameObjects.begin(); it != gameObjects.end(); ++it)
@@ -117,28 +118,44 @@ void Game::OnKeyDown(BYTE key)
 	FLOAT pitch = yawPitchRoll.y;
 	FLOAT roll = yawPitchRoll.z;
 
-	Vector3F position = camera->GetPosition();
+	Vector3F pos = camera->GetPosition();
+	Vector3F dir = camera->GetDirection().Normalize();
+	Vector3F right = camera->GetRight().Normalize();
+
 	switch (key)
 	{
+		// vector math is faster than trig
 	case 0x57: // W
-		position.x -= sin(DegToRad(yaw)) * 0.1f;
-		position.z += cos(DegToRad(yaw)) * 0.1f;
-		position.y += sin(DegToRad(pitch)) * 0.1f;
+		pos.x += dir.x;
+		pos.y += dir.y;
+		pos.z += dir.z;
+		// pos.x -= sin(DegToRad(yaw)) * 0.5f;
+		// pos.z += cos(DegToRad(yaw)) * 0.5f;
+		// pos.y += sin(DegToRad(pitch)) * 0.5f;
 		break;
 	case 0x41: // A
-		position.x -= cos(DegToRad(yaw + (_PI / 2.0f))) * 0.1f;
-		position.z += sin(DegToRad(yaw - _PI / 2.0f)) * 0.1f;
+		pos.x -= right.x;
+		pos.y -= right.y;
+		pos.z -= right.z;
+		// pos.x -= cos(DegToRad(yaw + (_PI / 2.0f))) * 0.5f;
+		// pos.z += sin(DegToRad(yaw - _PI / 2.0f)) * 0.5f;
 		break;
 	case 0x53: // S
-		position.x -= sin(DegToRad(yaw)) * -0.1f;
-		position.z += cos(DegToRad(yaw)) * -0.1f;
-		position.y += sin(DegToRad(pitch)) * -0.1f;
+		pos.x -= dir.x;
+		pos.y -= dir.y;
+		pos.z -= dir.z;
+		// pos.x -= sin(DegToRad(yaw)) * -0.5f;
+		// pos.z += cos(DegToRad(yaw)) * -0.5f;
+		// pos.y += sin(DegToRad(pitch)) * -0.5f;
 		break;
 	case 0x44: // D
-		position.x += cos(DegToRad(yaw + _PI / 2.0f)) * 0.1f;
-		position.z -= sin(DegToRad(yaw - _PI / 2.0f)) * 0.1f;
+		pos.x += right.x;
+		pos.y += right.y;
+		pos.z += right.z;
+		// pos.x += cos(DegToRad(yaw + _PI / 2.0f)) * 0.5f;
+		// pos.z -= sin(DegToRad(yaw - _PI / 2.0f)) * 0.5f;
 		break;
 	}
 
-	camera->SetPosition(position);
+	camera->SetPosition(pos);
 }
