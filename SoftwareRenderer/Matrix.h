@@ -31,6 +31,9 @@ public:
 	/// Set the scale elements
 	void SetScale(const Vector3F& scale);
 
+	/// Rotate the matrix
+	void RotateMatrix(const float yawRadians, const float pitchRadians, const float rollRadians);
+
 	/// Return the x, y, z position values
 	Vector3F GetPosition() const;
 
@@ -39,6 +42,9 @@ public:
 
 	/// Return the right vector for the matrix
 	Vector3F GetRight() const;
+
+	/// Return the up vector for the matrix
+	Vector3F GetUp() const;
 
 	/// Return the yaw, pitch and roll values
 	Vector3F GetYawPitchRoll() const;

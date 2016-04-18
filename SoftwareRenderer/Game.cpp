@@ -105,19 +105,23 @@ void Game::OnMouseUp(WPARAM buttonState, int x, int y)
 
 void Game::OnMouseMove(WPARAM buttonState, int x, int y)
 {
-	if ((buttonState & MK_LBUTTON) != 0)
+	if ((buttonState & MK_LBUTTON) != 0 && lastMouseX != x && lastMouseY != y)
 	{
-		// do some rotation
+		float deltaX = (float)(lastMouseX - x);
+		float deltaY = (float)(lastMouseY - y);
+
+		lastMouseX = x;
+		lastMouseY = y;
+
+		FLOAT yaw = DegToRad(deltaX / 9.0f);
+		FLOAT pitch = DegToRad(deltaY / 9.0f);
+
+		camera->Rotate(yaw, pitch, 0.0f);
 	}
 }
 
 void Game::OnKeyDown(BYTE key)
 {
-	Vector3F yawPitchRoll = camera->GetYawPitchRoll();
-	FLOAT yaw = yawPitchRoll.x;
-	FLOAT pitch = yawPitchRoll.y;
-	FLOAT roll = yawPitchRoll.z;
-
 	Vector3F pos = camera->GetPosition();
 	Vector3F dir = camera->GetDirection().Normalize();
 	Vector3F right = camera->GetRight().Normalize();

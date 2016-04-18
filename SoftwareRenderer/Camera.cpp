@@ -24,6 +24,11 @@ void Camera::SetPosition(const Vector3F& position)
 	worldMat.SetPosition(position);
 }
 
+void Camera::Rotate(const float yaw, const float pitch, const float roll)
+{
+	worldMat.RotateMatrix(yaw, pitch, roll);
+}
+
 Vector3F Camera::GetPosition()
 {
 	return worldMat.GetPosition();
@@ -37,6 +42,11 @@ Vector3F Camera::GetDirection()
 Vector3F Camera::GetRight()
 {
 	return worldMat.GetRight();
+}
+
+Vector3F Camera::GetUp()
+{
+	return worldMat.GetUp();
 }
 
 Vector3F Camera::GetYawPitchRoll()

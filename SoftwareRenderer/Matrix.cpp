@@ -3,6 +3,8 @@
 	Author: Dean Marsinelli
 */
 
+#include <DirectXMath.h>
+
 #include "Matrix.h"
 
 const double kThreshold = 0.001;
@@ -92,6 +94,26 @@ void Mat4x4::SetScale(const Vector3F& scale)
 	m[2][2] = scale.z;
 }
 
+void Mat4x4::RotateMatrix(const float yawRadians, const float pitchRadians, const float rollRadians)
+{
+	// I used direct x math for this to get it done quickly
+	using namespace DirectX;
+	XMMATRIX xm_mat = XMMatrixRotationRollPitchYaw(pitchRadians, yawRadians, rollRadians);
+	XMFLOAT4X4 float4x4;
+	XMStoreFloat4x4(&float4x4, xm_mat);
+
+	Mat4x4 rot;
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			rot.m[i][j] = float4x4.m[i][j];
+		}
+	}
+
+	*this = rot * (*this);
+}
+
 Vector3F Mat4x4::GetPosition() const
 {
 	return Vector3F(m[3][0], m[3][1], m[3][2]);
@@ -111,6 +133,14 @@ Vector3F Mat4x4::GetRight() const
 	justRot.SetPosition(Vector3F(0.0f, 0.0f, 0.0f));
 	Vector3F right = justRot.Transform(Vector3F(1.0f, 0.0f, 0.0f));
 	return right;
+}
+
+Vector3F Mat4x4::GetUp() const
+{
+	Mat4x4 justRot = *this;
+	justRot.SetPosition(Vector3F(0.0f, 0.0f, 0.0f));
+	Vector3F up = justRot.Transform(Vector3F(0.0f, 1.0f, 0.0f));
+	return up;
 }
 
 Vector3F Mat4x4::GetYawPitchRoll() const

@@ -18,7 +18,10 @@
 
 #define _PI			3.141592654f
 #define _2PI		6.283185307f
-#define DegToRad(x) x * (_PI / 180)
+#define DegToRad(x) ((x) * _PI / 180.0f)
+#define RadToDeg(x) ((x) * 180.0f / _PI)
+#define MAX(a, b) ((a) >= (b) ? (a) : (b))
+#define MIN(a, b) ((a) < (b) ? (a) : (b))
 
 enum Matrix
 {
