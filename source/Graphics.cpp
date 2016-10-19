@@ -266,7 +266,6 @@ void Graphics::BindMatrix(Mat4x4* mat, Matrix type)
 	case VIEW:
 		viewMatrix = mat;
 		break;
-
 	case PROJECTION:
 		projMatrix = mat;
 		break;
